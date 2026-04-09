@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeQ — Anonymous Classroom Questions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --student-gradient-start: #667eea;
+      --student-gradient-end: #764ba2;
+      --student-card-bg: rgba(255, 255, 255, 0.95);
+      --student-text: #1a1a2e;
+      --student-secondary: #6b7280;
+
+      --teacher-bg: #f9fafb;
+      --teacher-card: #ffffff;
+      --teacher-header: #1e1b4b;
+      --teacher-text: #111827;
+      --teacher-secondary: #6b7280;
+      --teacher-border: #e5e7eb;
+
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --success: #10b981;
+      --star: #f59e0b;
+
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: var(--font);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== UTILITIES ===== */
+    .hidden { display: none !important; }
+
+    /* ===== STUDENT VIEW ===== */
+    .student-view {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--student-gradient-start) 0%, var(--student-gradient-end) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .logo-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .hero-text {
+      color: rgba(255,255,255,0.9);
+      font-size: 16px;
+      margin-bottom: 32px;
+      font-weight: 500;
+    }
+
+    .ask-card {
+      background: var(--student-card-bg);
+      border-radius: var(--radius);
+      padding: 28px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      animation: cardFadeIn 0.4s ease-out;
+    }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--student-text);
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-family: var(--font);
+      border: 2px solid #e5e7eb;
+      border-radius: var(--radius-sm);
+      background: white;
+      color: var(--student-text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    .submit-btn:disabled {
+      background: #a5a6f6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Confirmation Card */
+    .confirmation-card {
+      text-align: center;
+      animation: confirmFadeIn 0.4s ease-out;
+    }
+
+    @keyframes confirmFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .confirm-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: rocketFloat 2s ease-in-out infinite;
+    }
+
+    @keyframes rocketFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .confirm-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--student-text);
+      margin-bottom: 8px;
+    }
+
+    .confirm-subtitle {
+      font-size: 15px;
+      color: var(--student-secondary);
+      margin-bottom: 24px;
+    }
+
+    .ask-another-btn {
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: white;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .ask-another-btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .student-footer {
+      margin-top: auto;
+      padding-top: 32px;
+    }
+
+    .switch-link {
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+
+    .switch-link:hover {
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    /* ===== TEACHER VIEW ===== */
+    .teacher-view {
+      min-height: 100vh;
+      background: var(--teacher-bg);
+    }
+
+    .teacher-nav {
+      background: var(--teacher-header);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .nav-badge {
+      background: var(--accent);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    .nav-count {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+
+    .logout-btn {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.9);
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .teacher-content {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: white;
+      padding: 6px;
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .filter-btn {
+      flex: 1;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: transparent;
+      color: var(--teacher-secondary);
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: #f3f4f6;
+      color: var(--teacher-text);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Question Cards */
+    .questions-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .question-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid var(--teacher-border);
+      animation: questionFadeIn 0.3s ease-out;
+    }
+
+    @keyframes questionFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card.starred {
+      border-color: var(--star);
+      border-width: 2px;
+      background: #fffbeb;
+    }
+
+    .question-text {
+      font-size: 16px;
+      color: var(--teacher-text);
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .answer-preview {
+      font-size: 14px;
+      color: var(--success);
+      background: #ecfdf5;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      line-height: 1.5;
+      border-left: 3px solid var(--success);
+    }
+
+    .question-followups {
+      margin-bottom: 12px;
+      background: #f9fafb;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      border: 1px solid var(--teacher-border);
+    }
+
+    .followups-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teacher-secondary);
+      margin-bottom: 10px;
+    }
+
+    .question-followup-item {
+      background: white;
+      padding: 10px 12px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      border-left: 3px solid var(--star);
+    }
+
+    .question-followup-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .question-followup-item.resolved {
+      border-left-color: var(--success);
+      opacity: 0.85;
+    }
+
+    .followup-q {
+      font-size: 14px;
+      color: var(--teacher-text);
+      margin-bottom: 6px;
+    }
+
+    .followup-a {
+      font-size: 13px;
+      color: var(--success);
+      background: #ecfdf5;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    .followup-resolved-label {
+      font-weight: 600;
+    }
+
+    .followup-resolve-btn {
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .followup-resolve-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .followup-edit-btn {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: transparent;
+      color: var(--teacher-secondary);
+      border: 1px solid var(--teacher-border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: 8px;
+    }
+
+    .followup-edit-btn:hover {
+      background: #f3f4f6;
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .question-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .question-time {
+      font-size: 13px;
+      color: var(--teacher-secondary);
+    }
+
+    .question-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font);
+      border: 1px solid var(--teacher-border);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      color: var(--teacher-secondary);
+    }
+
+    .action-btn:hover {
+      border-color: #d1d5db;
+      background: #f9fafb;
+    }
+
+    .action-btn.answered {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    .action-btn.starred {
+      background: var(--star);
+      border-color: var(--star);
+      color: white;
+    }
+
+    /* Answer Input Modal */
+    .answer-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .answer-modal-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .answer-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--teacher-header);
+      margin-bottom: 8px;
+    }
+
+    .answer-modal-question {
+      font-size: 14px;
+      color: var(--teacher-secondary);
+      background: #f3f4f6;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .answer-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-family: var(--font);
+      border: 2px solid #e5e7eb;
+      border-radius: var(--radius-sm);
+      background: white;
+      color: var(--teacher-text);
+      resize: vertical;
+      min-height: 100px;
+      margin-bottom: 16px;
+    }
+
+    .answer-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .answer-modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .modal-cancel-btn {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: white;
+      color: var(--teacher-secondary);
+      border: 1px solid var(--teacher-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-cancel-btn:hover {
+      background: #f9fafb;
+    }
+
+    .modal-save-btn {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .modal-save-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    /* ===== ANSWERS VIEW ===== */
+    .answers-section {
+      width: 100%;
+      max-width: 440px;
+      margin-top: 24px;
+    }
+
+    .answers-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 30px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 0 auto;
+    }
+
+    .answers-toggle:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .answers-toggle .count-badge {
+      background: rgba(255,255,255,0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .answers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .answer-card {
+      background: var(--student-card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      animation: cardFadeIn 0.4s ease-out;
+    }
+
+    .answer-card-q {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .answer-card-q-text {
+      font-size: 15px;
+      color: var(--student-text);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      background: #f3f4f6;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .answer-card-a {
+      font-size: 14px;
+      color: var(--student-secondary);
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .answer-card-a-text {
+      font-size: 15px;
+      color: var(--student-text);
+      line-height: 1.6;
+    }
+
+    .answer-time {
+      font-size: 12px;
+      color: var(--student-secondary);
+      margin-top: 10px;
+      opacity: 0.7;
+    }
+
+    /* Follow-up Section */
+    .follow-up-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .follow-up-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--student-secondary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .follow-up-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .follow-up-input {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: var(--font);
+      border: 2px solid #e5e7eb;
+      border-radius: var(--radius-sm);
+      background: white;
+      color: var(--student-text);
+      transition: border-color 0.2s;
+    }
+
+    .follow-up-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .follow-up-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .follow-up-submit {
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .follow-up-submit:hover {
+      background: var(--accent-hover);
+    }
+
+    .follow-up-submit:disabled {
+      background: #a5a6f6;
+      cursor: not-allowed;
+    }
+
+    .follow-ups-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .follow-up-item {
+      background: #f3f4f6;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--student-text);
+      line-height: 1.5;
+      animation: cardFadeIn 0.3s ease-out;
+    }
+
+    .follow-up-item.pending {
+      border-left: 3px solid var(--star);
+    }
+
+    .follow-up-item.resolved {
+      border-left: 3px solid var(--success);
+      opacity: 0.85;
+    }
+
+    .follow-up-text {
+      margin-bottom: 6px;
+    }
+
+    .follow-up-status {
+      margin-bottom: 6px;
+    }
+
+    .pending-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--star);
+      background: #fef3c7;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .resolved-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: white;
+      background: var(--success);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .follow-up-resolution {
+      background: #ecfdf5;
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    .resolution-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--success);
+      margin-bottom: 4px;
+    }
+
+    .resolution-text {
+      font-size: 13px;
+      color: var(--student-text);
+      line-height: 1.5;
+    }
+
+    .follow-up-time {
+      font-size: 11px;
+      color: var(--student-secondary);
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+
+    .no-answers {
+      text-align: center;
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+      margin-top: 16px;
+      padding: 20px;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--teacher-secondary);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--teacher-text);
+      margin-bottom: 8px;
+    }
+
+    .empty-text {
+      font-size: 15px;
+    }
+
+    /* ===== LOGIN SCREEN ===== */
+    .login-screen {
+      min-height: 100vh;
+      background: var(--teacher-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      animation: cardFadeIn 0.3s ease-out;
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--teacher-header);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+      font-size: 14px;
+      color: var(--teacher-secondary);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-error {
+      background: #fef2f2;
+      color: #dc2626;
+      font-size: 14px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      text-align: center;
+      border: 1px solid #fecaca;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: var(--font);
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .login-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .login-footer {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .back-link {
+      color: var(--teacher-secondary);
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .student-view {
+        padding: 32px 12px;
+      }
+
+      .ask-card {
+        padding: 22px 18px;
+      }
+
+      .teacher-nav {
+        padding: 12px 16px;
+      }
+
+      .nav-logo {
+        font-size: 16px;
+      }
+
+      .filter-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .question-card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== STUDENT VIEW ===== -->
+  <div id="student-view" class="student-view">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </div>
+      <span class="logo-text">SafeQ</span>
+    </div>
+    <p class="hero-text">Ask anything. Stay anonymous.</p>
+
+    <div id="ask-form-container" class="ask-card">
+      <form id="ask-form">
+        <div class="form-group">
+          <label class="form-label" for="class-code">Class Code</label>
+          <input
+            type="text"
+            id="class-code"
+            class="form-input"
+            placeholder="e.g. MATH101"
+            maxlength="10"
+            required
+          >
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="question-input">Your Question</label>
+          <textarea
+            id="question-input"
+            class="form-input form-textarea"
+            placeholder="Ask anything... your name stays secret 👀"
+            maxlength="500"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submit-btn">Send Anonymously ✈️</button>
+      </form>
+    </div>
+
+    <div id="confirmation-card" class="ask-card confirmation-card hidden">
+      <div class="confirm-icon">🚀</div>
+      <h2 class="confirm-title">Your question flew away!</h2>
+      <p class="confirm-subtitle">The teacher will answer it soon.</p>
+      <button type="button" class="ask-another-btn" id="ask-another-btn">Ask Another</button>
+    </div>
+
+    <div class="student-footer">
+      <a href="#teacher" class="switch-link">Switch to Teacher View →</a>
+    </div>
+
+    <div class="answers-section">
+      <button class="answers-toggle" id="answers-toggle">
+        View Teacher's Answers
+        <span class="count-badge" id="answers-count-badge">0</span>
+      </button>
+      <div id="answers-list" class="answers-list hidden"></div>
+      <div id="no-answers" class="no-answers hidden">No answers yet. Check back later!</div>
+    </div>
+  </div>
+
+  <!-- ===== TEACHER LOGIN ===== -->
+  <div id="login-screen" class="login-screen hidden">
+    <div class="login-card">
+      <h1 class="login-title">Teacher Login</h1>
+      <p class="login-subtitle">Enter password to access the dashboard</p>
+      <div id="login-error" class="login-error hidden">Incorrect password. Try demo123</div>
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="password-input">Password</label>
+          <input
+            type="password"
+            id="password-input"
+            class="form-input"
+            placeholder="Enter password"
+            required
+          >
+        </div>
+        <button type="submit" class="login-btn">Sign In</button>
+      </form>
+      <div class="login-footer">
+        <a href="#student" class="back-link">← Back to Student View</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TEACHER DASHBOARD ===== -->
+  <div id="teacher-view" class="teacher-view hidden">
+    <nav class="teacher-nav">
+      <div class="nav-left">
+        <span class="nav-logo">SafeQ</span>
+        <span class="nav-badge">MATH101</span>
+        <span class="nav-count" id="question-count">0 questions</span>
+      </div>
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </nav>
+
+    <div class="teacher-content">
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="unanswered">Unanswered</button>
+        <button class="filter-btn" data-filter="starred">Starred</button>
+        <button class="filter-btn" data-filter="doubts" id="doubts-filter-btn">Doubts <span id="doubts-count-badge" class="nav-count">0</span></button>
+      </div>
+
+      <div id="questions-feed" class="questions-feed"></div>
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-icon">💬</div>
+        <h3 class="empty-title">No questions yet</h3>
+        <p class="empty-text">Questions from students will appear here</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:20px;">
+      <a href="#student" class="back-link">← Back to Student View</a>
+    </div>
+  </div>
+
+  <!-- Answer Input Modal -->
+  <div id="answer-modal" class="answer-modal hidden">
+    <div class="answer-modal-card">
+      <h3 class="answer-modal-title">Answer Question</h3>
+      <p class="answer-modal-question" id="modal-question-text"></p>
+      <textarea id="answer-text-input" class="answer-textarea" placeholder="Type your answer here..."></textarea>
+      <div class="answer-modal-actions">
+        <button type="button" class="modal-cancel-btn" id="modal-cancel-btn">Cancel</button>
+        <button type="button" class="modal-save-btn" id="modal-save-btn">Save Answer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Follow-up Resolution Modal -->
+  <div id="followup-modal" class="answer-modal hidden">
+    <div class="answer-modal-card">
+      <h3 class="answer-modal-title">Resolve Follow-up Doubt</h3>
+      <p class="answer-modal-question" id="followup-modal-question-text"></p>
+      <textarea id="followup-resolution-input" class="answer-textarea" placeholder="Type your response to this doubt..."></textarea>
+      <div class="answer-modal-actions">
+        <button type="button" class="modal-cancel-btn" id="followup-modal-cancel-btn">Cancel</button>
+        <button type="button" class="modal-save-btn" id="followup-modal-resolve-btn">Mark Resolved</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== STORAGE =====
+    const KEYS = {
+      questions: 'askbox_questions',
+      loggedIn: 'askbox_teacher_logged_in'
+    };
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+    }
+
+    function getQuestions() {
+      const data = localStorage.getItem(KEYS.questions);
+      return data ? JSON.parse(data) : [];
+    }
+
+    function saveQuestions(questions) {
+      localStorage.setItem(KEYS.questions, JSON.stringify(questions));
+    }
+
+    function addQuestion(text, classCode) {
+      const questions = getQuestions();
+      questions.unshift({
+        id: generateId(),
+        text,
+        classCode,
+        timestamp: Date.now(),
+        answered: false,
+        answer: null,
+        answerTimestamp: null,
+        starred: false,
+        followUps: []
+      });
+      saveQuestions(questions);
+      return questions;
+    }
+
+    function updateQuestion(id, updates) {
+      const questions = getQuestions();
+      const idx = questions.findIndex(q => q.id === id);
+      if (idx !== -1) {
+        questions[idx] = { ...questions[idx], ...updates };
+        // Update answerTimestamp when answer is set
+        if (updates.answer && !questions[idx].answerTimestamp) {
+          questions[idx].answerTimestamp = Date.now();
+        }
+        saveQuestions(questions);
+      }
+      return questions;
+    }
+
+    // ===== SAMPLE DATA =====
+    function getSampleQuestions() {
+      return [
+        {
+          id: generateId(),
+          text: "Can you explain the quadratic formula one more time?",
+          classCode: "MATH101",
+          timestamp: Date.now() - 12 * 60 * 1000,
+          answered: false,
+          answer: null,
+          answerTimestamp: null,
+          starred: false,
+          followUps: []
+        },
+        {
+          id: generateId(),
+          text: "What's the difference between a function and a relation?",
+          classCode: "MATH101",
+          timestamp: Date.now() - 8 * 60 * 1000,
+          answered: false,
+          answer: null,
+          answerTimestamp: null,
+          starred: false,
+          followUps: []
+        },
+        {
+          id: generateId(),
+          text: "Why do we need to learn about fractions in real life?",
+          classCode: "MATH101",
+          timestamp: Date.now() - 5 * 60 * 1000,
+          answered: false,
+          answer: null,
+          answerTimestamp: null,
+          starred: true,
+          followUps: []
+        },
+        {
+          id: generateId(),
+          text: "Could you give an example of when to use the distributive property?",
+          classCode: "MATH101",
+          timestamp: Date.now() - 2 * 60 * 1000,
+          answered: true,
+          answer: "The distributive property states that a(b + c) = ab + ac. For example, 3(4 + 5) = 3(4) + 3(5) = 12 + 15 = 27. This is useful when you need to multiply a number by a sum!",
+          answerTimestamp: Date.now() - 2 * 60 * 1000,
+          starred: false,
+          followUps: [
+            {
+              id: generateId(),
+              text: "Thanks! But what if the numbers are negative, like 3(-4 + -5)?",
+              timestamp: Date.now() - 1 * 60 * 1000,
+              resolved: false,
+              resolution: null,
+              resolvedTimestamp: null
+            }
+          ]
+        },
+        {
+          id: generateId(),
+          text: "How do I simplify radicals? I keep getting confused.",
+          classCode: "MATH101",
+          timestamp: Date.now() - 1 * 60 * 1000,
+          answered: false,
+          answer: null,
+          answerTimestamp: null,
+          starred: false,
+          followUps: []
+        }
+      ];
+    }
+
+    function initSampleData() {
+      const existing = localStorage.getItem(KEYS.questions);
+      if (!existing) {
+        saveQuestions(getSampleQuestions());
+      }
+    }
+
+    // ===== TIME FORMATTING =====
+    function timeAgo(timestamp) {
+      const diff = Date.now() - timestamp;
+      const mins = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return `${mins} min${mins > 1 ? 's' : ''} ago`;
+      if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      return `${Math.floor(hours / 24)} days ago`;
+    }
+
+    // ===== DOM ELEMENTS =====
+    const views = {
+      student: document.getElementById('student-view'),
+      login: document.getElementById('login-screen'),
+      teacher: document.getElementById('teacher-view')
+    };
+
+    const studentForm = document.getElementById('ask-form');
+    const studentFormContainer = document.getElementById('ask-form-container');
+    const confirmationCard = document.getElementById('confirmation-card');
+    const classCodeInput = document.getElementById('class-code');
+    const questionInput = document.getElementById('question-input');
+    const askAnotherBtn = document.getElementById('ask-another-btn');
+
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const passwordInput = document.getElementById('password-input');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    const questionsFeed = document.getElementById('questions-feed');
+    const emptyState = document.getElementById('empty-state');
+    const questionCount = document.getElementById('question-count');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    const answersToggle = document.getElementById('answers-toggle');
+    const answersList = document.getElementById('answers-list');
+    const noAnswers = document.getElementById('no-answers');
+    const answersCountBadge = document.getElementById('answers-count-badge');
+
+    let answersVisible = false;
+    let currentFilter = 'all';
+
+    // ===== ANSWERS TOGGLE (STUDENT VIEW) =====
+    function updateAnswersBadge() {
+      const questions = getQuestions();
+      const answeredQuestions = questions.filter(q => q.answered && q.answer);
+      answersCountBadge.textContent = answeredQuestions.length;
+    }
+
+    // ===== FOLLOW-UPS =====
+    function addFollowUp(questionId, text) {
+      const questions = getQuestions();
+      const idx = questions.findIndex(q => q.id === questionId);
+      if (idx !== -1) {
+        if (!questions[idx].followUps) {
+          questions[idx].followUps = [];
+        }
+        questions[idx].followUps.push({
+          id: generateId(),
+          text,
+          timestamp: Date.now(),
+          resolved: false,
+          resolution: null,
+          resolvedTimestamp: null
+        });
+        saveQuestions(questions);
+      }
+      return questions;
+    }
+
+    function resolveFollowUp(questionId, followUpId, resolution) {
+      const questions = getQuestions();
+      const idx = questions.findIndex(q => q.id === questionId);
+      if (idx !== -1 && questions[idx].followUps) {
+        const fIdx = questions[idx].followUps.findIndex(f => f.id === followUpId);
+        if (fIdx !== -1) {
+          questions[idx].followUps[fIdx].resolved = true;
+          questions[idx].followUps[fIdx].resolution = resolution;
+          questions[idx].followUps[fIdx].resolvedTimestamp = Date.now();
+          saveQuestions(questions);
+        }
+      }
+      return questions;
+    }
+
+    function editFollowUp(questionId, followUpId, newResolution) {
+      const questions = getQuestions();
+      const idx = questions.findIndex(q => q.id === questionId);
+      if (idx !== -1 && questions[idx].followUps) {
+        const fIdx = questions[idx].followUps.findIndex(f => f.id === followUpId);
+        if (fIdx !== -1) {
+          questions[idx].followUps[fIdx].resolution = newResolution;
+          questions[idx].followUps[fIdx].resolvedTimestamp = Date.now();
+          saveQuestions(questions);
+        }
+      }
+      return questions;
+    }
+
+    function getPendingFollowUpsCount() {
+      const questions = getQuestions();
+      let count = 0;
+      questions.forEach(q => {
+        if (q.followUps) {
+          q.followUps.forEach(f => {
+            if (!f.resolved) count++;
+          });
+        }
+      });
+      return count;
+    }
+
+    function renderAnswers() {
+      const questions = getQuestions();
+      const answeredQuestions = questions.filter(q => q.answered && q.answer).sort((a, b) => b.timestamp - a.timestamp);
+
+      updateAnswersBadge();
+
+      if (answeredQuestions.length === 0) {
+        answersList.classList.add('hidden');
+        noAnswers.classList.remove('hidden');
+        return;
+      }
+
+      answersList.classList.remove('hidden');
+      noAnswers.classList.add('hidden');
+
+      answersList.innerHTML = answeredQuestions.map(q => `
+        <div class="answer-card" data-question-id="${q.id}">
+          <div class="answer-card-q">Q:</div>
+          <div class="answer-card-q-text">${escapeHtml(q.text)}</div>
+          <div class="answer-card-a">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Teacher's Answer:
+          </div>
+          <div class="answer-card-a-text">${escapeHtml(q.answer)}</div>
+          <div class="answer-time">${timeAgo(q.timestamp)}</div>
+
+          <div class="follow-up-section">
+            <div class="follow-up-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              Any more questions?
+            </div>
+            <div class="follow-up-input-row">
+              <input type="text" class="follow-up-input" placeholder="Still confused? Ask a follow-up..." maxlength="300" />
+              <button type="button" class="follow-up-submit">Send</button>
+            </div>
+            <div class="follow-ups-list">
+              ${(q.followUps || []).map(f => `
+                <div class="follow-up-item ${f.resolved ? 'resolved' : 'pending'}">
+                  <div class="follow-up-text">${escapeHtml(f.text)}</div>
+                  <div class="follow-up-status">
+                    ${f.resolved ? `
+                      <span class="resolved-badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Resolved
+                      </span>
+                    ` : `
+                      <span class="pending-badge">Awaiting response</span>
+                    `}
+                  </div>
+                  ${f.resolved ? `
+                    <div class="follow-up-resolution">
+                      <div class="resolution-label">Teacher's response:</div>
+                      <div class="resolution-text">${escapeHtml(f.resolution)}</div>
+                      <div class="follow-up-time">Resolved ${timeAgo(f.resolvedTimestamp)}</div>
+                    </div>
+                  ` : ''}
+                  <div class="follow-up-time">${timeAgo(f.timestamp)}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Attach follow-up event listeners
+      answersList.querySelectorAll('.answer-card').forEach(card => {
+        const questionId = card.dataset.questionId;
+        const input = card.querySelector('.follow-up-input');
+        const submitBtn = card.querySelector('.follow-up-submit');
+
+        const submitFollowUp = () => {
+          const text = input.value.trim();
+          if (text) {
+            addFollowUp(questionId, text);
+            input.value = '';
+            renderAnswers();
+          }
+        };
+
+        submitBtn.addEventListener('click', submitFollowUp);
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            submitFollowUp();
+          }
+        });
+      });
+    }
+
+    answersToggle.addEventListener('click', function() {
+      answersVisible = !answersVisible;
+      if (answersVisible) {
+        answersList.classList.remove('hidden');
+        noAnswers.classList.add('hidden');
+        answersToggle.innerHTML = 'Hide Teacher\'s Answers <span class="count-badge">' + answersCountBadge.textContent + '</span>';
+        renderAnswers();
+      } else {
+        answersList.classList.add('hidden');
+        answersToggle.innerHTML = 'View Teacher\'s Answers <span class="count-badge">' + answersCountBadge.textContent + '</span>';
+      }
+    });
+
+    // ===== NAVIGATION =====
+    function showView(view) {
+      Object.values(views).forEach(v => v.classList.add('hidden'));
+      views[view].classList.remove('hidden');
+
+      if (view === 'teacher') {
+        renderQuestions();
+      }
+    }
+
+    function handleHashChange() {
+      const hash = window.location.hash || '#student';
+
+      if (hash === '#teacher') {
+        if (sessionStorage.getItem(KEYS.loggedIn)) {
+          showView('teacher');
+        } else {
+          showView('login');
+        }
+      } else {
+        showView('student');
+      }
+    }
+
+    // ===== STUDENT FORM =====
+    classCodeInput.addEventListener('input', function() {
+      this.value = this.value.toUpperCase();
+    });
+
+    questionInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 240) + 'px';
+    });
+
+    studentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const text = questionInput.value.trim();
+      const classCode = classCodeInput.value.trim().toUpperCase();
+
+      if (!text || !classCode) return;
+
+      addQuestion(text, classCode);
+
+      studentFormContainer.classList.add('hidden');
+      confirmationCard.classList.remove('hidden');
+    });
+
+    askAnotherBtn.addEventListener('click', function() {
+      questionInput.value = '';
+      classCodeInput.value = '';
+      confirmationCard.classList.add('hidden');
+      studentFormContainer.classList.remove('hidden');
+    });
+
+    // ===== TEACHER LOGIN =====
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const password = passwordInput.value;
+
+      if (password === 'demo123') {
+        sessionStorage.setItem(KEYS.loggedIn, 'true');
+        passwordInput.value = '';
+        loginError.classList.add('hidden');
+        showView('teacher');
+        window.location.hash = '#teacher';
+      } else {
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    logoutBtn.addEventListener('click', function() {
+      sessionStorage.removeItem(KEYS.loggedIn);
+      showView('login');
+      window.location.hash = '#teacher';
+    });
+
+    // ===== FILTER =====
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.dataset.filter;
+        renderQuestions();
+      });
+    });
+
+    // ===== ANSWER MODAL =====
+    const answerModal = document.getElementById('answer-modal');
+    const modalQuestionText = document.getElementById('modal-question-text');
+    const answerTextInput = document.getElementById('answer-text-input');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
+    const modalSaveBtn = document.getElementById('modal-save-btn');
+
+    let currentAnswerQuestionId = null;
+
+    function openAnswerModal(questionId, questionText, existingAnswer) {
+      currentAnswerQuestionId = questionId;
+      modalQuestionText.textContent = questionText;
+      answerTextInput.value = existingAnswer || '';
+      answerModal.classList.remove('hidden');
+      answerTextInput.focus();
+    }
+
+    function closeAnswerModal() {
+      answerModal.classList.add('hidden');
+      currentAnswerQuestionId = null;
+      answerTextInput.value = '';
+    }
+
+    modalCancelBtn.addEventListener('click', closeAnswerModal);
+
+    answerModal.addEventListener('click', function(e) {
+      if (e.target === answerModal) {
+        closeAnswerModal();
+      }
+    });
+
+    modalSaveBtn.addEventListener('click', function() {
+      const answerText = answerTextInput.value.trim();
+      if (currentAnswerQuestionId && answerText) {
+        updateQuestion(currentAnswerQuestionId, {
+          answered: true,
+          answer: answerText
+        });
+        closeAnswerModal();
+        renderQuestions();
+      }
+    });
+
+    // ===== FOLLOW-UP RESOLUTION MODAL =====
+    const followupModal = document.getElementById('followup-modal');
+    const followupModalQuestionText = document.getElementById('followup-modal-question-text');
+    const followupResolutionInput = document.getElementById('followup-resolution-input');
+    const followupModalCancelBtn = document.getElementById('followup-modal-cancel-btn');
+    const followupModalResolveBtn = document.getElementById('followup-modal-resolve-btn');
+    const followupModalTitle = document.querySelector('#followup-modal .answer-modal-title');
+
+    let currentFollowUpQuestionId = null;
+    let currentFollowUpId = null;
+    let isEditingFollowUp = false;
+
+    function openFollowUpModal(questionId, followUpId, questionText, followUpText, existingResolution = null, isEdit = false) {
+      currentFollowUpQuestionId = questionId;
+      currentFollowUpId = followUpId;
+      isEditingFollowUp = isEdit;
+
+      if (isEdit) {
+        followupModalTitle.textContent = 'Edit Follow-up Response';
+        followupResolutionInput.value = existingResolution || '';
+        followupModalResolveBtn.textContent = 'Update';
+      } else {
+        followupModalTitle.textContent = 'Resolve Follow-up Doubt';
+        followupResolutionInput.value = '';
+        followupModalResolveBtn.textContent = 'Mark Resolved';
+      }
+
+      followupModalQuestionText.innerHTML = `<strong>Question:</strong> ${escapeHtml(questionText)}<br><strong>Doubt:</strong> ${escapeHtml(followUpText)}`;
+      followupModal.classList.remove('hidden');
+      followupResolutionInput.focus();
+    }
+
+    function closeFollowUpModal() {
+      followupModal.classList.add('hidden');
+      currentFollowUpQuestionId = null;
+      currentFollowUpId = null;
+      isEditingFollowUp = false;
+    }
+
+    followupModalCancelBtn.addEventListener('click', closeFollowUpModal);
+
+    followupModal.addEventListener('click', function(e) {
+      if (e.target === followupModal) {
+        closeFollowUpModal();
+      }
+    });
+
+    followupModalResolveBtn.addEventListener('click', function() {
+      const resolution = followupResolutionInput.value.trim();
+      if (currentFollowUpQuestionId && currentFollowUpId && resolution) {
+        if (isEditingFollowUp) {
+          editFollowUp(currentFollowUpQuestionId, currentFollowUpId, resolution);
+        } else {
+          resolveFollowUp(currentFollowUpQuestionId, currentFollowUpId, resolution);
+        }
+        closeFollowUpModal();
+        renderQuestions();
+      }
+    });
+
+    // ===== RENDER QUESTIONS =====
+    function renderQuestions() {
+      let questions = getQuestions();
+      const totalCount = questions.length;
+      questionCount.textContent = `${totalCount} question${totalCount !== 1 ? 's' : ''}`;
+
+      // Update doubts badge
+      const pendingDoubts = getPendingFollowUpsCount();
+      const doubtsBadge = document.getElementById('doubts-count-badge');
+      if (doubtsBadge) {
+        doubtsBadge.textContent = pendingDoubts;
+      }
+
+      // Filter
+      if (currentFilter === 'unanswered') {
+        questions = questions.filter(q => !q.answered);
+      } else if (currentFilter === 'starred') {
+        questions = questions.filter(q => q.starred);
+      } else if (currentFilter === 'doubts') {
+        questions = questions.filter(q => q.followUps && q.followUps.some(f => !f.resolved));
+      }
+
+      if (questions.length === 0) {
+        questionsFeed.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+
+        if (currentFilter === 'unanswered') {
+          emptyState.querySelector('.empty-title').textContent = 'All answered!';
+          emptyState.querySelector('.empty-text').textContent = 'Great job keeping up with questions';
+        } else if (currentFilter === 'starred') {
+          emptyState.querySelector('.empty-title').textContent = 'No starred questions';
+          emptyState.querySelector('.empty-text').textContent = 'Star questions to highlight them';
+        } else if (currentFilter === 'doubts') {
+          emptyState.querySelector('.empty-title').textContent = 'No pending doubts!';
+          emptyState.querySelector('.empty-text').textContent = 'All follow-up doubts have been resolved';
+        } else {
+          emptyState.querySelector('.empty-title').textContent = 'No questions yet';
+          emptyState.querySelector('.empty-text').textContent = 'Questions from students will appear here';
+        }
+        return;
+      }
+
+      questionsFeed.classList.remove('hidden');
+      emptyState.classList.add('hidden');
+
+      questionsFeed.innerHTML = questions.map(q => `
+        <div class="question-card ${q.starred ? 'starred' : ''}" data-id="${q.id}">
+          <p class="question-text">${escapeHtml(q.text)}</p>
+          ${q.answer ? `<p class="answer-preview"><strong>Answer:</strong> ${escapeHtml(q.answer)}</p>` : ''}
+          ${q.followUps && q.followUps.length > 0 ? `
+            <div class="question-followups">
+              <div class="followups-header">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Follow-up Doubts (${q.followUps.filter(f => !f.resolved).length} pending)
+              </div>
+              ${q.followUps.map(f => `
+                <div class="question-followup-item ${f.resolved ? 'resolved' : 'pending'}">
+                  <div class="followup-q">${escapeHtml(f.text)}</div>
+                  ${f.resolved ? `
+                    <div class="followup-a">
+                      <span class="followup-resolved-label">Resolved:</span> ${escapeHtml(f.resolution)}
+                      <button class="followup-edit-btn" data-followup-id="${f.id}">Edit</button>
+                    </div>
+                  ` : `
+                    <button class="followup-resolve-btn" data-followup-id="${f.id}">Answer this Doubt</button>
+                  `}
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+          <div class="question-meta">
+            <span class="question-time">${timeAgo(q.timestamp)}</span>
+            <div class="question-actions">
+              <button class="action-btn ${q.answered ? 'answered' : ''}" data-action="answered">
+                ${q.answered ? 'Edit Answer ✓' : 'Answer'}
+              </button>
+              <button class="action-btn ${q.starred ? 'starred' : ''}" data-action="starred">
+                ${q.starred ? '⭐ Starred' : '⭐ Star'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Attach event listeners
+      questionsFeed.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const card = this.closest('.question-card');
+          const id = card.dataset.id;
+          const action = this.dataset.action;
+
+          if (action === 'answered') {
+            const questions = getQuestions();
+            const q = questions.find(q => q.id === id);
+            openAnswerModal(id, q.text, q.answer);
+          } else if (action === 'starred') {
+            const questions = getQuestions();
+            const q = questions.find(q => q.id === id);
+            updateQuestion(id, { starred: !q.starred });
+            renderQuestions();
+          }
+        });
+      });
+
+      // Attach follow-up resolve button listeners
+      questionsFeed.querySelectorAll('.followup-resolve-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const card = this.closest('.question-card');
+          const questionId = card.dataset.id;
+          const followUpId = this.dataset.followupId;
+          const questions = getQuestions();
+          const q = questions.find(q => q.id === questionId);
+          const followUp = q.followUps.find(f => f.id === followUpId);
+          openFollowUpModal(questionId, followUpId, q.text, followUp.text);
+        });
+      });
+
+      // Attach follow-up edit button listeners
+      questionsFeed.querySelectorAll('.followup-edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const card = this.closest('.question-card');
+          const questionId = card.dataset.id;
+          const followUpId = this.dataset.followupId;
+          const questions = getQuestions();
+          const q = questions.find(q => q.id === questionId);
+          const followUp = q.followUps.find(f => f.id === followUpId);
+          openFollowUpModal(questionId, followUpId, q.text, followUp.text, followUp.resolution, true);
+        });
+      });
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ===== LIVE REFRESH =====
+    let lastQuestionCount = getQuestions().length;
+    setInterval(() => {
+      const teacherVisible = !views.teacher.classList.contains('hidden');
+      if (window.location.hash === '#teacher' && teacherVisible) {
+        const questions = getQuestions();
+        if (questions.length !== lastQuestionCount) {
+          lastQuestionCount = questions.length;
+          renderQuestions();
+        }
+        // Update doubts badge
+        const pendingDoubts = getPendingFollowUpsCount();
+        const doubtsBadge = document.getElementById('doubts-count-badge');
+        if (doubtsBadge) {
+          doubtsBadge.textContent = pendingDoubts;
+        }
+      }
+      // Also update answers badge in student view
+      if (window.location.hash === '#student' || window.location.hash === '') {
+        updateAnswersBadge();
+      }
+    }, 1000);
+
+    // ===== INIT =====
+    initSampleData();
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange();
+  </script>
+</body>
+</html>
