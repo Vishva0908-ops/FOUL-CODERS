@@ -54,6 +54,8 @@
   --shadow-lg: 0 10px 30px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
 
   --transition: 0.18s ease;
+
+  /* Responsive font scale */
   --scale: 1;
 }
 
@@ -65,9 +67,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
 }
-
-/* ===== UTILITIES ===== */
-.hidden { display: none !important; }
 
 /* ── Layout Shell ── */
 .app-shell {
@@ -640,152 +639,6 @@ html, body {
 }
 .fab:hover { transform: scale(1.08) rotate(90deg); box-shadow: 0 8px 28px rgba(67,97,238,0.5); }
 
-/* Filter Bar (teacher) */
-.filter-bar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  background: var(--surface);
-  padding: 6px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-}
-.filter-btn {
-  flex: 1;
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  background: transparent;
-  color: var(--text-muted);
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all var(--transition);
-}
-.filter-btn:hover { background: var(--surface2); color: var(--text); }
-.filter-btn.active { background: var(--accent); color: white; }
-
-/* Question Cards (teacher) */
-.questions-feed {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.question-card {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  animation: questionFadeIn 0.3s ease-out;
-}
-.question-card.starred { border-color: var(--amber); border-width: 2px; background: #fffbeb; }
-@keyframes questionFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.question-text {
-  font-size: 16px;
-  color: var(--text);
-  margin-bottom: 12px;
-  line-height: 1.6;
-}
-.answer-preview {
-  font-size: 14px;
-  color: var(--green);
-  background: var(--green-soft);
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  margin-bottom: 12px;
-  line-height: 1.5;
-  border-left: 3px solid var(--green);
-}
-.question-followups {
-  margin-bottom: 12px;
-  background: var(--surface2);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  border: 1px solid var(--border);
-}
-.followups-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-}
-.question-followup-item {
-  background: var(--surface);
-  padding: 10px 12px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  border-left: 3px solid var(--amber);
-}
-.question-followup-item.resolved { border-left-color: var(--green); opacity: 0.85; }
-.question-followup-item:last-child { margin-bottom: 0; }
-.followup-q { font-size: 14px; color: var(--text); margin-bottom: 6px; }
-.followup-a { font-size: 13px; color: var(--green); background: var(--green-soft); padding: 6px 10px; border-radius: 4px; }
-.followup-resolve-btn {
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background var(--transition);
-}
-.followup-resolve-btn:hover { background: var(--accent-hover); }
-.followup-edit-btn {
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all var(--transition);
-  margin-left: 8px;
-}
-.followup-edit-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
-.question-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.question-time { font-size: 13px; color: var(--text-muted); }
-.question-actions { display: flex; gap: 8px; }
-.action-btn {
-  padding: 6px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all var(--transition);
-  background: var(--surface);
-  color: var(--text-muted);
-}
-.action-btn:hover { border-color: #d1d5db; background: var(--surface2); }
-.action-btn.answered { background: var(--green); border-color: var(--green); color: white; }
-.action-btn.starred { background: var(--amber); border-color: var(--amber); color: white; }
-
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text-muted);
-}
-.empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
-.empty-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-.empty-text { font-size: 15px; }
-
 /* ══════════════════════════════
    TEACHER ROOM VIEW
 ══════════════════════════════ */
@@ -890,7 +743,7 @@ html, body {
   flex-wrap: wrap;
 }
 
-.action-btn-primary {
+.action-btn {
   padding: 9px 18px;
   border-radius: var(--radius);
   font-size: 13px; font-weight: 600;
@@ -898,19 +751,10 @@ html, body {
   transition: all var(--transition);
   font-family: var(--font-sans);
   white-space: nowrap;
-  background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(67,97,238,0.3);
 }
+.action-btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(67,97,238,0.3); }
 .action-btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
-.action-btn-ghost {
-  padding: 9px 18px;
-  border-radius: var(--radius);
-  font-size: 13px; font-weight: 600;
-  cursor: pointer; border: none;
-  transition: all var(--transition);
-  font-family: var(--font-sans);
-  white-space: nowrap;
-  background: transparent; color: var(--text-muted); border: 1px solid var(--border);
-}
+.action-btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
 .action-btn-ghost:hover { background: var(--surface2); }
 
 /* DM Thread */
@@ -1016,35 +860,6 @@ html, body {
 }
 .submit-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(67,97,238,0.35); }
 
-/* Confirmation Card (student) */
-.confirmation-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 32px;
-  box-shadow: var(--shadow-sm);
-  text-align: center;
-}
-.confirm-icon { font-size: 56px; margin-bottom: 16px; animation: rocketFloat 2s ease-in-out infinite; }
-@keyframes rocketFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-.confirm-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-.confirm-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
-.ask-another-btn {
-  padding: 12px 28px;
-  font-size: 15px;
-  font-weight: 600;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: background var(--transition);
-}
-.ask-another-btn:hover { background: var(--accent-hover); }
-
 .feed-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
 .feed-section-header {
   padding: 12px 16px;
@@ -1085,141 +900,6 @@ html, body {
 .dm-mini-from { font-size: 10px; color: var(--text-faint); font-family: var(--font-mono); margin-bottom: 3px; }
 .dm-mini-msg.student-msg .dm-mini-from { color: rgba(255,255,255,0.6); }
 
-/* Answers Section (student) */
-.answers-section { width: 100%; margin-top: 16px; }
-.answers-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 30px;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
-  margin: 0 auto;
-}
-.answers-toggle:hover { background: rgba(255,255,255,0.3); }
-.answers-toggle .count-badge {
-  background: rgba(255,255,255,0.3);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 12px;
-}
-.answers-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.answer-card {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-  animation: cardFadeIn 0.4s ease-out;
-}
-@keyframes cardFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.answer-card-q { font-size: 14px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
-.answer-card-q-text {
-  font-size: 15px;
-  color: var(--text);
-  line-height: 1.5;
-  margin-bottom: 12px;
-  background: var(--surface2);
-  padding: 12px;
-  border-radius: var(--radius-sm);
-}
-.answer-card-a { font-size: 14px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.answer-card-a-text { font-size: 15px; color: var(--text); line-height: 1.6; }
-.answer-time { font-size: 12px; color: var(--text-muted); margin-top: 10px; opacity: 0.7; }
-.no-answers { text-align: center; color: var(--text-muted); font-size: 14px; margin-top: 16px; padding: 20px; }
-
-/* Follow-up Section (student) */
-.follow-up-section {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-.follow-up-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.follow-up-input-row { display: flex; gap: 8px; }
-.follow-up-input {
-  flex: 1;
-  padding: 10px 14px;
-  font-size: 14px;
-  border: 2px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--text);
-  transition: border-color var(--transition);
-}
-.follow-up-input:focus { outline: none; border-color: var(--accent); }
-.follow-up-input::placeholder { color: var(--text-faint); }
-.follow-up-submit {
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background var(--transition);
-  white-space: nowrap;
-}
-.follow-up-submit:hover { background: var(--accent-hover); }
-.follow-up-submit:disabled { background: var(--text-faint); cursor: not-allowed; }
-.follow-ups-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-.follow-up-item {
-  background: var(--surface2);
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  color: var(--text);
-  line-height: 1.5;
-  animation: cardFadeIn 0.3s ease-out;
-}
-.follow-up-item.pending { border-left: 3px solid var(--amber); }
-.follow-up-item.resolved { border-left: 3px solid var(--green); opacity: 0.85; }
-.follow-up-text { margin-bottom: 6px; }
-.follow-up-status { margin-bottom: 6px; }
-.pending-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--amber);
-  background: var(--amber-soft);
-  padding: 2px 8px;
-  border-radius: 10px;
-}
-.resolved-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  color: white;
-  background: var(--green);
-  padding: 2px 8px;
-  border-radius: 10px;
-}
-.follow-up-resolution { background: var(--green-soft); padding: 8px 10px; border-radius: 6px; margin-top: 8px; }
-.resolution-label { font-size: 11px; font-weight: 600; color: var(--green); margin-bottom: 4px; }
-.resolution-text { font-size: 13px; color: var(--text); line-height: 1.5; }
-.follow-up-time { font-size: 11px; color: var(--text-muted); margin-top: 4px; opacity: 0.8; }
-
 /* ── Toast ── */
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -1250,77 +930,6 @@ html, body {
 }
 
 /* ══════════════════════════════
-   ANSWER INPUT MODAL
-══════════════════════════════ */
-.answer-modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-}
-.answer-modal-card {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: var(--shadow-lg);
-}
-.answer-modal-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
-.answer-modal-question {
-  font-size: 14px;
-  color: var(--text-muted);
-  background: var(--surface2);
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  margin-bottom: 16px;
-  line-height: 1.5;
-}
-.answer-textarea {
-  width: 100%;
-  padding: 12px 16px;
-  font-size: 15px;
-  font-family: var(--font-sans);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--text);
-  resize: vertical;
-  min-height: 100px;
-  margin-bottom: 16px;
-}
-.answer-textarea:focus { outline: none; border-color: var(--accent); }
-.answer-modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
-.modal-cancel-btn {
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: var(--surface);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background var(--transition);
-}
-.modal-cancel-btn:hover { background: var(--surface2); }
-.modal-save-btn {
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background var(--transition);
-}
-.modal-save-btn:hover { background: var(--accent-hover); }
-
-/* ══════════════════════════════
    RESPONSIVE — TABLET (≤900px)
 ══════════════════════════════ */
 @media (max-width: 900px) {
@@ -1343,8 +952,9 @@ html, body {
   .demo-nav { min-height: 44px; }
   .nav-tab { padding: 0 10px; font-size: 10px; height: 44px; }
   .brand-chip { padding: 0 10px; gap: 6px; }
-  .brand-name { display: none; }
+  .brand-name { display: none; } /* hide text on small screens */
 
+  /* Landing */
   .landing { padding: 24px 16px; justify-content: flex-start; padding-top: 40px; }
   .landing-card { padding: 28px 20px; max-width: 100%; border-radius: var(--radius-lg); }
   .landing-tagline { font-size: 20px; }
@@ -1356,32 +966,41 @@ html, body {
   .room-input { min-width: 100px; }
   .classroom-illustration { display: none; }
 
+  /* Room layout stacks vertically */
   .room-layout { flex-direction: column; }
   .sidebar { width: 100%; height: 200px; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); }
   .sidebar-list { display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; gap: 8px; padding: 8px; }
   .q-item { margin-bottom: 0; min-width: 200px; }
 
+  /* Dashboard */
   .rooms-grid { grid-template-columns: 1fr; }
   .dashboard-body { padding: 14px 12px; }
 
+  /* Topbar */
   .page-topbar { padding: 0 12px; height: 52px; gap: 8px; }
   .topbar-title { font-size: 14px; }
   .topbar-sub { display: none; }
   .badge-pill { font-size: 10px; padding: 3px 8px; }
+  /* Hide some badges on small screens */
   .topbar-right .badge-navy { display: none; }
 
+  /* Back button sizing */
   .back-btn { font-size: 12px; padding: 6px 10px 6px 8px; }
 
+  /* Workspace */
   .workspace-question { font-size: 14px; }
   .workspace-body { padding: 12px; }
   .workspace-header { padding: 12px 14px; }
   .answer-area textarea { height: 80px; }
 
+  /* Student */
   .student-body { padding: 12px; gap: 12px; }
   .ask-textarea { min-height: 80px; }
 
+  /* DM overlay full width on mobile */
   .dm-overlay { width: 100%; height: 320px; left: 0; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
 
+  /* FAB */
   .fab { bottom: 20px; right: 16px; width: 46px; height: 46px; font-size: 20px; }
 }
 
@@ -1403,6 +1022,7 @@ html, body {
 
   <!-- ── Demo Nav ── -->
   <nav class="demo-nav">
+    <!-- Logo: clicking opens file picker to update logo everywhere -->
     <div class="brand-chip" onclick="triggerLogoUpload()" title="Click to upload your logo">
       <div class="brand-logo" id="navLogo">
         <span class="logo-fallback" id="navLogoFallback">sQ</span>
@@ -1427,6 +1047,7 @@ html, body {
       <div class="landing-grid"></div>
       <div class="landing-card">
 
+        <!-- Logo upload zone -->
         <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:8px;">
           <div class="landing-logo" id="landingLogo" title="Click to upload your logo" onclick="triggerLogoUpload()">
             <span class="logo-fallback-lg" id="landingLogoFallback">sQ</span>
@@ -1438,8 +1059,7 @@ html, body {
         <div class="landing-tagline"><em>Anonymity</em> fosters curiosity.</div>
         <div class="landing-sub">A safe space for students to ask any question — without fear of judgement.</div>
 
-        <!-- Teacher login (password) -->
-        <button class="btn btn-google" onclick="showTeacherLogin()">
+        <button class="btn btn-google" onclick="switchScreen('dashboard')">
           <span class="google-icon"></span>
           Continue with Google as Teacher
         </button>
@@ -1448,12 +1068,13 @@ html, body {
 
         <div class="student-join">
           <span class="student-label">I'm a Student</span>
-          <input class="room-input" type="text" id="class-code" placeholder="Enter class code" maxlength="10">
-          <button class="join-btn" onclick="studentJoinRoom()">Join →</button>
+          <input class="room-input" type="text" id="roomCodeInput" placeholder="Enter room code" maxlength="6">
+          <button class="join-btn" onclick="joinRoom()">Join →</button>
         </div>
 
       </div>
 
+      <!-- Classroom illustration -->
       <div class="classroom-illustration" style="margin-top:36px;">
         <svg width="220" height="140" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
           <ellipse cx="110" cy="120" rx="90" ry="14" fill="rgba(255,255,255,0.06)"/>
@@ -1478,20 +1099,6 @@ html, body {
         </svg>
       </div>
     </div>
-
-    <!-- Teacher Login Modal -->
-    <div class="answer-modal" id="teacher-login-modal" style="display:none;">
-      <div class="answer-modal-card">
-        <h3 class="answer-modal-title">Teacher Login</h3>
-        <p class="answer-modal-question" style="margin-bottom:12px;">Enter password to access the dashboard</p>
-        <div id="login-error" style="background:#fef2f2;color:#dc2626;font-size:14px;padding:10px 14px;border-radius:6px;margin-bottom:16px;text-align:center;border:1px solid #fecaca;display:none;">Incorrect password. Try demo123</div>
-        <input type="password" id="password-input" class="answer-textarea" placeholder="Enter password" style="min-height:48px;margin-bottom:12px;">
-        <div class="answer-modal-actions">
-          <button type="button" class="modal-cancel-btn" onclick="closeTeacherLogin()">Cancel</button>
-          <button type="button" class="modal-save-btn" onclick="teacherLogin()">Sign In</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- ══════════════════════════════
@@ -1500,6 +1107,7 @@ html, body {
   <div class="screen" id="screen-dashboard">
     <div class="page-topbar">
       <div class="topbar-left">
+        <!-- BACK BUTTON -->
         <button class="back-btn" onclick="switchScreen('login')" title="Back to Landing">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Back
@@ -1509,43 +1117,111 @@ html, body {
         </div>
         <div style="min-width:0;">
           <div class="topbar-title">My Classrooms</div>
-          <div class="topbar-sub" id="classroom-subtitle">MATH101</div>
+          <div class="topbar-sub">4 active rooms</div>
         </div>
       </div>
       <div class="topbar-right">
-        <div class="live-indicator"><span class="live-dot"></span>Live</div>
-        <span class="badge-pill badge-navy" id="question-count">0 questions</span>
-        <button class="avatar-btn" onclick="switchScreen('login')" title="Logout">T</button>
+        <div class="avatar-btn">AS</div>
       </div>
     </div>
 
     <div class="dashboard-body">
       <div class="section-header">
-        <span class="section-title">Questions</span>
+        <span class="section-title">Active Rooms</span>
+        <button class="action-btn action-btn-primary" onclick="showToast('New room created!')">+ New Room</button>
+      </div>
+      <div class="rooms-grid">
+        <div class="room-card card-in" onclick="switchScreen('room')">
+          <div class="room-card-top">
+            <div>
+              <div class="room-name">Physics 101</div>
+              <div class="room-code-tag">Room code: PH101</div>
+            </div>
+            <div class="count-badge">5</div>
+          </div>
+          <div class="room-stat"><span class="stat-dot"></span>5 unanswered questions</div>
+        </div>
+        <div class="room-card card-in" onclick="switchScreen('room')" style="animation-delay:0.05s">
+          <div class="room-card-top">
+            <div>
+              <div class="room-name">History 202</div>
+              <div class="room-code-tag">Room code: HI202</div>
+            </div>
+            <div class="count-badge">12</div>
+          </div>
+          <div class="room-stat"><span class="stat-dot"></span>5 unanswered questions</div>
+        </div>
+        <div class="room-card card-in" onclick="switchScreen('room')" style="animation-delay:0.1s">
+          <div class="room-card-top">
+            <div>
+              <div class="room-name">Physics 101 B</div>
+              <div class="room-code-tag">Room code: PH102</div>
+            </div>
+            <div class="count-badge">18</div>
+          </div>
+          <div class="room-stat"><span class="stat-dot"></span>5 unanswered questions</div>
+        </div>
+        <div class="room-card card-in" onclick="switchScreen('room')" style="animation-delay:0.15s">
+          <div class="room-card-top">
+            <div>
+              <div class="room-name">History 203</div>
+              <div class="room-code-tag">Room code: HI203</div>
+            </div>
+            <div class="count-badge" style="background:var(--teal)">16</div>
+          </div>
+          <div class="room-stat"><span class="stat-dot answered"></span>12 total answered</div>
+        </div>
       </div>
 
-      <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
-        <button class="filter-btn" data-filter="unanswered" onclick="setFilter('unanswered')">Unanswered</button>
-        <button class="filter-btn" data-filter="starred" onclick="setFilter('starred')">Starred</button>
-        <button class="filter-btn" data-filter="doubts" id="doubts-filter-btn" onclick="setFilter('doubts')">Doubts <span id="doubts-count-badge" class="count-badge" style="background:rgba(255,255,255,0.3);color:inherit;padding:1px 6px;border-radius:10px;font-size:10px;">0</span></button>
+      <div class="section-header" style="margin-top:8px;">
+        <span class="section-title">Recent Activity</span>
       </div>
-
-      <div id="questions-feed" class="questions-feed"></div>
-      <div id="empty-state" class="empty-state" style="display:none;">
-        <div class="empty-icon">💬</div>
-        <h3 class="empty-title">No questions yet</h3>
-        <p class="empty-text">Questions from students will appear here</p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
+        <div class="feed-item card-in" style="padding:14px 18px;">
+          <div class="feed-item-top">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);">
+              <span>🦊</span><span style="font-family:var(--font-mono)">anon · fox</span>
+              <span class="badge-pill badge-accent" style="font-size:10px;">Physics 101</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint);font-family:var(--font-mono)">2m ago</span>
+          </div>
+          <div class="feed-q">"Will quantum entanglement ever be used for faster-than-light communication?"</div>
+        </div>
+        <div class="feed-item card-in" style="padding:14px 18px;animation-delay:0.05s">
+          <div class="feed-item-top">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);">
+              <span>🐺</span><span style="font-family:var(--font-mono)">anon · wolf</span>
+              <span class="badge-pill badge-teal" style="font-size:10px;">History 202</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint);font-family:var(--font-mono)">5m ago</span>
+          </div>
+          <div class="feed-q">"What is the core distinction between special and general relativity?"</div>
+        </div>
+        <div class="feed-item card-in" style="padding:14px 18px;animation-delay:0.1s">
+          <div class="feed-item-top">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);">
+              <span>🐻</span><span style="font-family:var(--font-mono)">anon · bear</span>
+              <span class="badge-pill badge-accent" style="font-size:10px;">Physics 101</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint);font-family:var(--font-mono)">12m ago</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+            <div class="feed-q">"Is the speed of light truly invariant across all inertial reference frames?"</div>
+            <span class="answered-tag" style="flex-shrink:0;">✓ Answered</span>
+          </div>
+        </div>
       </div>
     </div>
+    <button class="fab" onclick="showToast('New room created!')">+</button>
   </div>
 
   <!-- ══════════════════════════════
-       SCREEN: TEACHER ROOM VIEW (not wired - kept for visual completeness)
+       SCREEN: TEACHER ROOM VIEW
   ══════════════════════════════ -->
   <div class="screen" id="screen-room">
     <div class="page-topbar">
       <div class="topbar-left">
+        <!-- BACK BUTTON -->
         <button class="back-btn" onclick="switchScreen('dashboard')" title="Back to Dashboard">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Back
@@ -1566,6 +1242,8 @@ html, body {
     </div>
 
     <div class="room-layout">
+
+      <!-- Sidebar -->
       <div class="sidebar">
         <div class="sidebar-tabs">
           <div class="sidebar-tab active" id="inbox-tab" onclick="sidebarTab('inbox')">Inbox <span id="inbox-count" style="font-size:10px;background:var(--amber);color:#fff;border-radius:20px;padding:1px 6px;margin-left:3px;">3</span></div>
@@ -1627,6 +1305,7 @@ html, body {
         </div>
       </div>
 
+      <!-- Workspace -->
       <div class="workspace">
         <div class="workspace-header">
           <div class="workspace-label">Workspace — selected question</div>
@@ -1641,8 +1320,8 @@ html, body {
             <div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;">Write public answer</div>
             <textarea placeholder="Type your answer here — it will be visible to all students once published..."></textarea>
             <div class="answer-footer">
-              <button class="action-btn-ghost" onclick="showToast('Saved as draft')">Save draft</button>
-              <button class="action-btn-primary" onclick="publishAnswer()">Publish &amp; Answer</button>
+              <button class="action-btn action-btn-ghost" onclick="showToast('Saved as draft')">Save draft</button>
+              <button class="action-btn action-btn-primary" onclick="publishAnswer()">Publish &amp; Answer</button>
             </div>
           </div>
 
@@ -1652,12 +1331,13 @@ html, body {
             <div style="flex:1;height:1px;background:var(--border);"></div>
           </div>
 
-          <button class="action-btn-ghost" style="width:100%;justify-content:center;" onclick="toggleDM()">
+          <button class="action-btn action-btn-ghost" style="width:100%;justify-content:center;" onclick="toggleDM()">
             💬 Start private DM with student
           </button>
         </div>
       </div>
 
+      <!-- DM Thread overlay -->
       <div class="dm-overlay" id="dmOverlay" style="display:none;">
         <div class="dm-header">
           <div class="dm-header-info">
@@ -1696,6 +1376,7 @@ html, body {
   <div class="screen" id="screen-student">
     <div class="page-topbar">
       <div class="topbar-left">
+        <!-- BACK BUTTON -->
         <button class="back-btn" onclick="switchScreen('login')" title="Leave Room">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           Leave
@@ -1704,8 +1385,8 @@ html, body {
           <span class="logo-text" id="studentLogoFallback">sQ</span>
         </div>
         <div style="min-width:0;">
-          <div class="topbar-title" id="student-room-title">Room: MATH101</div>
-          <div class="topbar-sub">Teacher Dashboard</div>
+          <div class="topbar-title">Room: Physics 101</div>
+          <div class="topbar-sub">Dr. A. Sharma</div>
         </div>
       </div>
       <div class="topbar-right">
@@ -1717,15 +1398,15 @@ html, body {
     <div class="student-body">
 
       <!-- Ask box -->
-      <div class="ask-card card-in" id="ask-form-container">
+      <div class="ask-card card-in">
         <div class="ask-title">Ask a question</div>
         <div class="ask-hint">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           Your identity is fully anonymous. The teacher will never know who asked.
         </div>
-        <textarea class="ask-textarea" id="stu-q-input" placeholder="What's on your mind? Ask anything..." maxlength="500" oninput="updateChar()"></textarea>
+        <textarea class="ask-textarea" id="stu-q-input" placeholder="What's on your mind? Ask anything..." maxlength="280" oninput="updateChar()"></textarea>
         <div class="ask-actions">
-          <span class="char-count"><span id="char-num">0</span> / 500</span>
+          <span class="char-count"><span id="char-num">0</span> / 280</span>
           <button class="submit-btn" onclick="studentSubmit()">
             Submit Anonymously
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -1733,22 +1414,68 @@ html, body {
         </div>
       </div>
 
-      <!-- Confirmation Card -->
-      <div class="confirmation-card" id="confirmation-card" style="display:none;">
-        <div class="confirm-icon">🚀</div>
-        <h2 class="confirm-title">Your question flew away!</h2>
-        <p class="confirm-subtitle">The teacher will answer it soon.</p>
-        <button type="button" class="ask-another-btn" id="ask-another-btn">Ask Another</button>
+      <!-- Feed: Answered -->
+      <div class="feed-card card-in" style="animation-delay:0.08s">
+        <div class="feed-section-header">
+          <span class="feed-section-label">Public feed — answered</span>
+          <span class="badge-pill badge-teal" style="font-size:10px;">2 answers</span>
+        </div>
+        <div class="feed-item">
+          <div class="feed-item-top">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);">
+              <span>🐻</span><span style="font-family:var(--font-mono)">anon · bear</span>
+            </div>
+            <span class="answered-tag">✓ Answered</span>
+          </div>
+          <div class="feed-q">"Is the speed of light truly invariant across all inertial reference frames?"</div>
+          <div class="dm-thread">
+            <div class="dm-thread-header" onclick="toggleDMThread(this)">
+              <span class="dm-thread-label">💬 Private teacher reply (2 messages)</span>
+              <span style="font-size:11px;color:var(--text-faint);">▾</span>
+            </div>
+            <div class="dm-thread-body">
+              <div class="dm-mini-msg teacher-msg">
+                <div class="dm-mini-from">Dr. Sharma</div>
+                Yes — this is one of Einstein's two foundational postulates. c ≈ 2.998 × 10⁸ m/s remains constant in every inertial frame.
+              </div>
+              <div class="dm-mini-msg student-msg">
+                <div class="dm-mini-from">You</div>
+                So even travelling at 0.5c I'd still measure c?
+              </div>
+              <div style="margin-top:8px;">
+                <input class="dm-input" type="text" placeholder="Reply..." style="width:100%;font-size:12px;" onkeydown="if(event.key==='Enter'){showToast('Message sent');this.value='';}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-item-top">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);">
+              <span>🦁</span><span style="font-family:var(--font-mono)">anon · lion</span>
+            </div>
+            <span class="answered-tag">✓ Answered</span>
+          </div>
+          <div class="feed-q">"How does Hawking radiation escape a black hole if nothing can escape the gravitational field?"</div>
+        </div>
       </div>
 
-      <!-- Answers Section -->
-      <div class="answers-section">
-        <button class="answers-toggle" id="answers-toggle" onclick="toggleAnswers()">
-          View Teacher's Answers
-          <span class="count-badge" id="answers-count-badge">0</span>
-        </button>
-        <div id="answers-list" class="answers-list" style="display:none;"></div>
-        <div id="no-answers" class="no-answers" style="display:none;">No answers yet. Check back later!</div>
+      <!-- Feed: Your pending -->
+      <div class="feed-card card-in" style="animation-delay:0.14s" id="pending-feed">
+        <div class="feed-section-header">
+          <span class="feed-section-label">Your pending questions</span>
+          <span class="badge-pill badge-amber" style="font-size:10px;" id="pending-count">1 pending</span>
+        </div>
+        <div id="pending-list">
+          <div class="feed-item">
+            <div class="feed-item-top">
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);">
+                <span>🦁</span><span style="font-family:var(--font-mono)">you · pending</span>
+              </div>
+              <span class="pending-tag">⏳ Pending</span>
+            </div>
+            <div class="feed-q-yours">"What's the relationship between entropy and information in black holes?"</div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1759,175 +1486,56 @@ html, body {
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Answer Modal -->
-<div id="answer-modal" class="answer-modal hidden">
-  <div class="answer-modal-card">
-    <h3 class="answer-modal-title">Answer Question</h3>
-    <p class="answer-modal-question" id="modal-question-text"></p>
-    <textarea id="answer-text-input" class="answer-textarea" placeholder="Type your answer here..."></textarea>
-    <div class="answer-modal-actions">
-      <button type="button" class="modal-cancel-btn" id="modal-cancel-btn">Cancel</button>
-      <button type="button" class="modal-save-btn" id="modal-save-btn">Save Answer</button>
-    </div>
-  </div>
-</div>
-
-<!-- Follow-up Resolution Modal -->
-<div id="followup-modal" class="answer-modal hidden">
-  <div class="answer-modal-card">
-    <h3 class="answer-modal-title">Resolve Follow-up Doubt</h3>
-    <p class="answer-modal-question" id="followup-modal-question-text"></p>
-    <textarea id="followup-resolution-input" class="answer-textarea" placeholder="Type your response to this doubt..."></textarea>
-    <div class="answer-modal-actions">
-      <button type="button" class="modal-cancel-btn" id="followup-modal-cancel-btn">Cancel</button>
-      <button type="button" class="modal-save-btn" id="followup-modal-resolve-btn">Mark Resolved</button>
-    </div>
-  </div>
-</div>
-
 <script>
-// ===== STORAGE =====
+// ── Logo state ──
 var logoDataUrl = null;
+
+// IDs of all logo containers
 var LOGO_IDS = ['navLogo', 'landingLogo', 'dashLogo', 'roomLogo', 'studentLogo'];
 var FALLBACK_IDS = ['navLogoFallback', 'landingLogoFallback', 'dashLogoFallback', 'roomLogoFallback', 'studentLogoFallback'];
 
-var KEYS = {
-  questions: 'askbox_questions',
-  loggedIn: 'askbox_teacher_logged_in'
-};
-
-function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+function triggerLogoUpload() {
+  document.getElementById('nav-logo-upload').click();
 }
 
-function getQuestions() {
-  var data = localStorage.getItem(KEYS.questions);
-  return data ? JSON.parse(data) : [];
+function uploadLogo(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    logoDataUrl = e.target.result;
+    applyLogoEverywhere();
+    showToast('Logo updated ✓');
+  };
+  reader.readAsDataURL(file);
 }
 
-function saveQuestions(questions) {
-  localStorage.setItem(KEYS.questions, JSON.stringify(questions));
-}
+function applyLogoEverywhere() {
+  if (!logoDataUrl) return;
+  LOGO_IDS.forEach(function(id) {
+    var container = document.getElementById(id);
+    if (!container) return;
 
-function addQuestion(text, classCode) {
-  var questions = getQuestions();
-  questions.unshift({
-    id: generateId(),
-    text: text,
-    classCode: classCode,
-    timestamp: Date.now(),
-    answered: false,
-    answer: null,
-    answerTimestamp: null,
-    starred: false,
-    followUps: []
+    // Remove any existing img we added
+    var existing = container.querySelector('img.logo-img');
+    if (existing) existing.remove();
+
+    // Hide all fallback text spans
+    container.querySelectorAll('span.logo-fallback, span.logo-fallback-lg, span.logo-text').forEach(function(s) {
+      s.style.display = 'none';
+    });
+
+    // Create and prepend image
+    var img = document.createElement('img');
+    img.src = logoDataUrl;
+    img.className = 'logo-img';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;pointer-events:none;';
+    container.insertBefore(img, container.firstChild);
   });
-  saveQuestions(questions);
-  return questions;
 }
 
-function updateQuestion(id, updates) {
-  var questions = getQuestions();
-  var idx = questions.findIndex(function(q) { return q.id === id; });
-  if (idx !== -1) {
-    questions[idx] = Object.assign({}, questions[idx], updates);
-    if (updates.answer && !questions[idx].answerTimestamp) {
-      questions[idx].answerTimestamp = Date.now();
-    }
-    saveQuestions(questions);
-  }
-  return questions;
-}
-
-// ===== SAMPLE DATA =====
-function getSampleQuestions() {
-  return [
-    {
-      id: generateId(),
-      text: "Can you explain the quadratic formula one more time?",
-      classCode: "MATH101",
-      timestamp: Date.now() - 12 * 60 * 1000,
-      answered: false,
-      answer: null,
-      answerTimestamp: null,
-      starred: false,
-      followUps: []
-    },
-    {
-      id: generateId(),
-      text: "What's the difference between a function and a relation?",
-      classCode: "MATH101",
-      timestamp: Date.now() - 8 * 60 * 1000,
-      answered: false,
-      answer: null,
-      answerTimestamp: null,
-      starred: false,
-      followUps: []
-    },
-    {
-      id: generateId(),
-      text: "Why do we need to learn about fractions in real life?",
-      classCode: "MATH101",
-      timestamp: Date.now() - 5 * 60 * 1000,
-      answered: false,
-      answer: null,
-      answerTimestamp: null,
-      starred: true,
-      followUps: []
-    },
-    {
-      id: generateId(),
-      text: "Could you give an example of when to use the distributive property?",
-      classCode: "MATH101",
-      timestamp: Date.now() - 2 * 60 * 1000,
-      answered: true,
-      answer: "The distributive property states that a(b + c) = ab + ac. For example, 3(4 + 5) = 3(4) + 3(5) = 12 + 15 = 27. This is useful when you need to multiply a number by a sum!",
-      answerTimestamp: Date.now() - 2 * 60 * 1000,
-      starred: false,
-      followUps: [
-        {
-          id: generateId(),
-          text: "Thanks! But what if the numbers are negative, like 3(-4 + -5)?",
-          timestamp: Date.now() - 1 * 60 * 1000,
-          resolved: false,
-          resolution: null,
-          resolvedTimestamp: null
-        }
-      ]
-    },
-    {
-      id: generateId(),
-      text: "How do I simplify radicals? I keep getting confused.",
-      classCode: "MATH101",
-      timestamp: Date.now() - 1 * 60 * 1000,
-      answered: false,
-      answer: null,
-      answerTimestamp: null,
-      starred: false,
-      followUps: []
-    }
-  ];
-}
-
-function initSampleData() {
-  var existing = localStorage.getItem(KEYS.questions);
-  if (!existing) {
-    saveQuestions(getSampleQuestions());
-  }
-}
-
-// ===== TIME FORMATTING =====
-function timeAgo(timestamp) {
-  var diff = Date.now() - timestamp;
-  var mins = Math.floor(diff / 60000);
-  var hours = Math.floor(diff / 3600000);
-  if (mins < 1) return 'Just now';
-  if (mins < 60) return mins + ' min' + (mins > 1 ? 's' : '') + ' ago';
-  if (hours < 24) return hours + ' hour' + (hours > 1 ? 's' : '') + ' ago';
-  return Math.floor(hours / 24) + ' days ago';
-}
-
-// ===== NAVIGATION =====
+// ── Navigation with history stack ──
 var screenHistory = ['login'];
 
 function switchScreen(id) {
@@ -1935,13 +1543,21 @@ function switchScreen(id) {
   if (current !== id) {
     screenHistory.push(id);
   }
+
   document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
   document.querySelectorAll('.nav-tab').forEach(function(t, i) {
     t.classList.toggle('active', ['login','dashboard','room','student'][i] === id);
   });
   var el = document.getElementById('screen-' + id);
   if (el) el.classList.add('active');
-  if (id === 'dashboard') renderQuestions();
+}
+
+function goBack() {
+  if (screenHistory.length > 1) {
+    screenHistory.pop();
+    var prev = screenHistory[screenHistory.length - 1];
+    switchScreen(prev);
+  }
 }
 
 function sidebarTab(tab) {
@@ -1973,7 +1589,7 @@ function sendTeacherDM() {
   var msgs = document.getElementById('dm-msgs');
   var w = document.createElement('div');
   w.className = 'msg-wrap from-teacher';
-  w.innerHTML = '<div class="msg-from">Teacher</div><div class="msg-bubble teacher">' + inp.value + '</div>';
+  w.innerHTML = '<div class="msg-from">Dr. Sharma</div><div class="msg-bubble teacher">' + inp.value + '</div>';
   msgs.appendChild(w);
   msgs.scrollTop = msgs.scrollHeight;
   inp.value = '';
@@ -1981,482 +1597,48 @@ function sendTeacherDM() {
 
 function publishAnswer() {
   showToast('Question published & answered ✓');
+  var inboxCount = parseInt(document.getElementById('inbox-count').textContent) - 1;
+  if (inboxCount >= 0) document.getElementById('inbox-count').textContent = inboxCount;
+  var pubCount = parseInt(document.getElementById('pub-count').textContent) + 1;
+  document.getElementById('pub-count').textContent = pubCount;
 }
 
-// ===== TEACHER LOGIN =====
-function showTeacherLogin() {
-  document.getElementById('teacher-login-modal').style.display = 'flex';
-  document.getElementById('password-input').value = '';
-  document.getElementById('password-input').focus();
-}
-
-function closeTeacherLogin() {
-  document.getElementById('teacher-login-modal').style.display = 'none';
-}
-
-function teacherLogin() {
-  var password = document.getElementById('password-input').value;
-  if (password === 'demo123') {
-    sessionStorage.setItem(KEYS.loggedIn, 'true');
-    closeTeacherLogin();
-    switchScreen('dashboard');
-  } else {
-    var err = document.getElementById('login-error');
-    err.style.display = 'block';
-  }
-}
-
-// ===== FILTER =====
-var currentFilter = 'all';
-
-function setFilter(filter) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-  var btns = document.querySelectorAll('.filter-btn');
-  btns.forEach(function(b) {
-    if (b.getAttribute('data-filter') === filter) b.classList.add('active');
-  });
-  renderQuestions();
-}
-
-// ===== RENDER QUESTIONS =====
-function renderQuestions() {
-  var questions = getQuestions();
-  var totalCount = questions.length;
-  var countEl = document.getElementById('question-count');
-  if (countEl) countEl.textContent = totalCount + ' question' + (totalCount !== 1 ? 's' : '');
-
-  var pendingDoubts = getPendingFollowUpsCount();
-  var doubtsBadge = document.getElementById('doubts-count-badge');
-  if (doubtsBadge) doubtsBadge.textContent = pendingDoubts;
-
-  if (currentFilter === 'unanswered') {
-    questions = questions.filter(function(q) { return !q.answered; });
-  } else if (currentFilter === 'starred') {
-    questions = questions.filter(function(q) { return q.starred; });
-  } else if (currentFilter === 'doubts') {
-    questions = questions.filter(function(q) { return q.followUps && q.followUps.some(function(f) { return !f.resolved; }); });
-  }
-
-  var feed = document.getElementById('questions-feed');
-  var empty = document.getElementById('empty-state');
-
-  if (questions.length === 0) {
-    feed.style.display = 'none';
-    empty.style.display = 'block';
-    if (empty.querySelector('.empty-title')) {
-      if (currentFilter === 'unanswered') {
-        empty.querySelector('.empty-title').textContent = 'All answered!';
-        empty.querySelector('.empty-text').textContent = 'Great job keeping up with questions';
-      } else if (currentFilter === 'starred') {
-        empty.querySelector('.empty-title').textContent = 'No starred questions';
-        empty.querySelector('.empty-text').textContent = 'Star questions to highlight them';
-      } else if (currentFilter === 'doubts') {
-        empty.querySelector('.empty-title').textContent = 'No pending doubts!';
-        empty.querySelector('.empty-text').textContent = 'All follow-up doubts have been resolved';
-      } else {
-        empty.querySelector('.empty-title').textContent = 'No questions yet';
-        empty.querySelector('.empty-text').textContent = 'Questions from students will appear here';
-      }
-    }
-    return;
-  }
-
-  feed.style.display = 'flex';
-  empty.style.display = 'none';
-
-  feed.innerHTML = questions.map(function(q) {
-    var followUpsHtml = '';
-    if (q.followUps && q.followUps.length > 0) {
-      var pendingFollowUps = q.followUps.filter(function(f) { return !f.resolved; });
-      followUpsHtml = '<div class="question-followups">' +
-        '<div class="followups-header">' +
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>' +
-          'Follow-up Doubts (' + pendingFollowUps.length + ' pending)' +
-        '</div>' +
-        q.followUps.map(function(f) {
-          if (f.resolved) {
-            return '<div class="question-followup-item resolved">' +
-              '<div class="followup-q">' + escapeHtml(f.text) + '</div>' +
-              '<div class="followup-a"><span>Resolved:</span> ' + escapeHtml(f.resolution) + '</div>' +
-              '<button class="followup-edit-btn" data-followup-id="' + f.id + '" data-question-id="' + q.id + '">Edit</button>' +
-            '</div>';
-          } else {
-            return '<div class="question-followup-item pending">' +
-              '<div class="followup-q">' + escapeHtml(f.text) + '</div>' +
-              '<button class="followup-resolve-btn" data-followup-id="' + f.id + '" data-question-id="' + q.id + '">Answer this Doubt</button>' +
-            '</div>';
-          }
-        }).join('') +
-      '</div>';
-    }
-    return '<div class="question-card' + (q.starred ? ' starred' : '') + '" data-id="' + q.id + '">' +
-      '<p class="question-text">' + escapeHtml(q.text) + '</p>' +
-      (q.answer ? '<p class="answer-preview"><strong>Answer:</strong> ' + escapeHtml(q.answer) + '</p>' : '') +
-      followUpsHtml +
-      '<div class="question-meta">' +
-        '<span class="question-time">' + timeAgo(q.timestamp) + '</span>' +
-        '<div class="question-actions">' +
-          '<button class="action-btn' + (q.answered ? ' answered' : '') + '" data-action="answered">' + (q.answered ? 'Edit Answer ✓' : 'Answer') + '</button>' +
-          '<button class="action-btn' + (q.starred ? ' starred' : '') + '" data-action="starred">' + (q.starred ? '⭐ Starred' : '⭐ Star') + '</button>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-
-  // Attach event listeners
-  feed.querySelectorAll('.action-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var card = this.closest('.question-card');
-      var id = card.getAttribute('data-id');
-      var action = this.getAttribute('data-action');
-      if (action === 'answered') {
-        var questions = getQuestions();
-        var qq = questions.find(function(q) { return q.id === id; });
-        openAnswerModal(id, qq.text, qq.answer);
-      } else if (action === 'starred') {
-        var questions = getQuestions();
-        var qq = questions.find(function(q) { return q.id === id; });
-        updateQuestion(id, { starred: !qq.starred });
-        renderQuestions();
-      }
-    });
-  });
-
-  feed.querySelectorAll('.followup-resolve-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var card = this.closest('.question-card');
-      var questionId = card.getAttribute('data-id');
-      var followUpId = this.getAttribute('data-followup-id');
-      var questions = getQuestions();
-      var qq = questions.find(function(q) { return q.id === questionId; });
-      var followUp = qq.followUps.find(function(f) { return f.id === followUpId; });
-      openFollowUpModal(questionId, followUpId, qq.text, followUp.text);
-    });
-  });
-
-  feed.querySelectorAll('.followup-edit-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var card = this.closest('.question-card');
-      var questionId = card.getAttribute('data-id');
-      var followUpId = this.getAttribute('data-followup-id');
-      var questions = getQuestions();
-      var qq = questions.find(function(q) { return q.id === questionId; });
-      var followUp = qq.followUps.find(function(f) { return f.id === followUpId; });
-      openFollowUpModal(questionId, followUpId, qq.text, followUp.text, followUp.resolution, true);
-    });
-  });
-}
-
-// ===== ANSWER MODAL =====
-var answerModal = document.getElementById('answer-modal');
-var modalQuestionText = document.getElementById('modal-question-text');
-var answerTextInput = document.getElementById('answer-text-input');
-var modalCancelBtn = document.getElementById('modal-cancel-btn');
-var modalSaveBtn = document.getElementById('modal-save-btn');
-var currentAnswerQuestionId = null;
-
-function openAnswerModal(questionId, questionText, existingAnswer) {
-  currentAnswerQuestionId = questionId;
-  modalQuestionText.textContent = questionText;
-  answerTextInput.value = existingAnswer || '';
-  answerModal.classList.remove('hidden');
-  answerTextInput.focus();
-}
-
-function closeAnswerModal() {
-  answerModal.classList.add('hidden');
-  currentAnswerQuestionId = null;
-  answerTextInput.value = '';
-}
-
-modalCancelBtn.addEventListener('click', closeAnswerModal);
-
-answerModal.addEventListener('click', function(e) {
-  if (e.target === answerModal) closeAnswerModal();
-});
-
-modalSaveBtn.addEventListener('click', function() {
-  var answerText = answerTextInput.value.trim();
-  if (currentAnswerQuestionId && answerText) {
-    updateQuestion(currentAnswerQuestionId, { answered: true, answer: answerText });
-    closeAnswerModal();
-    renderQuestions();
-  }
-});
-
-// ===== FOLLOW-UP MODAL =====
-var followupModal = document.getElementById('followup-modal');
-var followupModalQuestionText = document.getElementById('followup-modal-question-text');
-var followupResolutionInput = document.getElementById('followup-resolution-input');
-var followupModalCancelBtn = document.getElementById('followup-modal-cancel-btn');
-var followupModalResolveBtn = document.getElementById('followup-modal-resolve-btn');
-var followupModalTitle = followupModal.querySelector('.answer-modal-title');
-var currentFollowUpQuestionId = null;
-var currentFollowUpId = null;
-var isEditingFollowUp = false;
-
-function openFollowUpModal(questionId, followUpId, questionText, followUpText, existingResolution, isEdit) {
-  currentFollowUpQuestionId = questionId;
-  currentFollowUpId = followUpId;
-  isEditingFollowUp = isEdit || false;
-
-  if (isEdit) {
-    followupModalTitle.textContent = 'Edit Follow-up Response';
-    followupResolutionInput.value = existingResolution || '';
-    followupModalResolveBtn.textContent = 'Update';
-  } else {
-    followupModalTitle.textContent = 'Resolve Follow-up Doubt';
-    followupResolutionInput.value = '';
-    followupModalResolveBtn.textContent = 'Mark Resolved';
-  }
-
-  followupModalQuestionText.innerHTML = '<strong>Question:</strong> ' + escapeHtml(questionText) + '<br><strong>Doubt:</strong> ' + escapeHtml(followUpText);
-  followupModal.classList.remove('hidden');
-  followupResolutionInput.focus();
-}
-
-function closeFollowUpModal() {
-  followupModal.classList.add('hidden');
-  currentFollowUpQuestionId = null;
-  currentFollowUpId = null;
-  isEditingFollowUp = false;
-}
-
-followupModalCancelBtn.addEventListener('click', closeFollowUpModal);
-
-followupModal.addEventListener('click', function(e) {
-  if (e.target === followupModal) closeFollowUpModal();
-});
-
-followupModalResolveBtn.addEventListener('click', function() {
-  var resolution = followupResolutionInput.value.trim();
-  if (currentFollowUpQuestionId && currentFollowUpId && resolution) {
-    if (isEditingFollowUp) {
-      editFollowUp(currentFollowUpQuestionId, currentFollowUpId, resolution);
-    } else {
-      resolveFollowUp(currentFollowUpQuestionId, currentFollowUpId, resolution);
-    }
-    closeFollowUpModal();
-    renderQuestions();
-  }
-});
-
-// ===== FOLLOW-UPS =====
-function addFollowUp(questionId, text) {
-  var questions = getQuestions();
-  var idx = questions.findIndex(function(q) { return q.id === questionId; });
-  if (idx !== -1) {
-    if (!questions[idx].followUps) questions[idx].followUps = [];
-    questions[idx].followUps.push({
-      id: generateId(),
-      text: text,
-      timestamp: Date.now(),
-      resolved: false,
-      resolution: null,
-      resolvedTimestamp: null
-    });
-    saveQuestions(questions);
-  }
-  return questions;
-}
-
-function resolveFollowUp(questionId, followUpId, resolution) {
-  var questions = getQuestions();
-  var idx = questions.findIndex(function(q) { return q.id === questionId; });
-  if (idx !== -1 && questions[idx].followUps) {
-    var fIdx = questions[idx].followUps.findIndex(function(f) { return f.id === followUpId; });
-    if (fIdx !== -1) {
-      questions[idx].followUps[fIdx].resolved = true;
-      questions[idx].followUps[fIdx].resolution = resolution;
-      questions[idx].followUps[fIdx].resolvedTimestamp = Date.now();
-      saveQuestions(questions);
-    }
-  }
-  return questions;
-}
-
-function editFollowUp(questionId, followUpId, newResolution) {
-  var questions = getQuestions();
-  var idx = questions.findIndex(function(q) { return q.id === questionId; });
-  if (idx !== -1 && questions[idx].followUps) {
-    var fIdx = questions[idx].followUps.findIndex(function(f) { return f.id === followUpId; });
-    if (fIdx !== -1) {
-      questions[idx].followUps[fIdx].resolution = newResolution;
-      questions[idx].followUps[fIdx].resolvedTimestamp = Date.now();
-      saveQuestions(questions);
-    }
-  }
-  return questions;
-}
-
-function getPendingFollowUpsCount() {
-  var questions = getQuestions();
-  var count = 0;
-  questions.forEach(function(q) {
-    if (q.followUps) {
-      q.followUps.forEach(function(f) {
-        if (!f.resolved) count++;
-      });
-    }
-  });
-  return count;
-}
-
-// ===== STUDENT ACTIONS =====
-var answersVisible = false;
-
-function studentJoinRoom() {
-  var code = document.getElementById('class-code').value.trim().toUpperCase();
-  if (!code) { showToast('Enter a class code first'); return; }
-  showToast('Joining room ' + code + ' …');
-  setTimeout(function() {
-    var title = document.getElementById('student-room-title');
-    if (title) title.textContent = 'Room: ' + code;
-    switchScreen('student');
-    renderAnswers();
-  }, 600);
+// ── Student actions ──
+function joinRoom() {
+  var code = document.getElementById('roomCodeInput').value.trim();
+  if (!code) { showToast('Enter a room code first'); return; }
+  showToast('Joining room ' + code.toUpperCase() + ' …');
+  setTimeout(function() { switchScreen('student'); }, 600);
 }
 
 function updateChar() {
   var len = document.getElementById('stu-q-input').value.length;
-  var el = document.getElementById('char-num');
-  if (el) el.textContent = len;
+  document.getElementById('char-num').textContent = len;
 }
 
+var pendingCount = 1;
 function studentSubmit() {
   var inp = document.getElementById('stu-q-input');
   var txt = inp.value.trim();
   if (!txt) return;
-  var code = document.getElementById('class-code');
-  var classCode = code ? code.value.trim().toUpperCase() : 'MATH101';
-  addQuestion(txt, classCode);
-  document.getElementById('ask-form-container').style.display = 'none';
-  document.getElementById('confirmation-card').style.display = 'block';
+  var item = document.createElement('div');
+  item.className = 'feed-item card-in';
+  item.innerHTML = '<div class="feed-item-top"><div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);"><span>🦁</span><span style="font-family:var(--font-mono)">you · pending</span></div><span class="pending-tag">⏳ Pending</span></div><div class="feed-q-yours">"' + txt + '"</div>';
+  document.getElementById('pending-list').prepend(item);
+  inp.value = '';
+  document.getElementById('char-num').textContent = '0';
+  pendingCount++;
+  document.getElementById('pending-count').textContent = pendingCount + ' pending';
   showToast('Submitted anonymously ✓');
 }
 
-document.getElementById('ask-another-btn').addEventListener('click', function() {
-  var inp = document.getElementById('stu-q-input');
-  if (inp) inp.value = '';
-  updateChar();
-  document.getElementById('confirmation-card').style.display = 'none';
-  document.getElementById('ask-form-container').style.display = 'block';
-});
-
-// ===== ANSWERS TOGGLE (STUDENT VIEW) =====
-function updateAnswersBadge() {
-  var questions = getQuestions();
-  var answeredQuestions = questions.filter(function(q) { return q.answered && q.answer; });
-  var badge = document.getElementById('answers-count-badge');
-  if (badge) badge.textContent = answeredQuestions.length;
+function toggleDMThread(header) {
+  var body = header.nextElementSibling;
+  var open = body.classList.toggle('open');
+  header.querySelector('span:last-child').textContent = open ? '▴' : '▾';
 }
 
-function toggleAnswers() {
-  answersVisible = !answersVisible;
-  var answersList = document.getElementById('answers-list');
-  var noAnswers = document.getElementById('no-answers');
-  var toggle = document.getElementById('answers-toggle');
-  if (answersVisible) {
-    renderAnswers();
-    answersList.style.display = 'flex';
-    noAnswers.style.display = 'none';
-    toggle.innerHTML = "Hide Teacher's Answers <span class=\"count-badge\">" + (document.getElementById('answers-count-badge') ? document.getElementById('answers-count-badge').textContent : '0') + "</span>";
-  } else {
-    answersList.style.display = 'none';
-    toggle.innerHTML = "View Teacher's Answers <span class=\"count-badge\">" + (document.getElementById('answers-count-badge') ? document.getElementById('answers-count-badge').textContent : '0') + "</span>";
-  }
-}
-
-function renderAnswers() {
-  var questions = getQuestions();
-  var answeredQuestions = questions.filter(function(q) { return q.answered && q.answer; }).sort(function(a, b) { return b.timestamp - a.timestamp; });
-  updateAnswersBadge();
-  var answersList = document.getElementById('answers-list');
-  var noAnswers = document.getElementById('no-answers');
-
-  if (answeredQuestions.length === 0) {
-    answersList.style.display = 'none';
-    noAnswers.style.display = 'block';
-    return;
-  }
-
-  answersList.style.display = 'flex';
-  noAnswers.style.display = 'none';
-
-  answersList.innerHTML = answeredQuestions.map(function(q) {
-    var followUpsHtml = '';
-    if (q.followUps && q.followUps.length > 0) {
-      followUpsHtml = '<div class="follow-up-section">' +
-        '<div class="follow-up-title">' +
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>' +
-          'Any more questions?' +
-        '</div>' +
-        '<div class="follow-up-input-row">' +
-          '<input type="text" class="follow-up-input" placeholder="Still confused? Ask a follow-up..." maxlength="300" />' +
-          '<button type="button" class="follow-up-submit">Send</button>' +
-        '</div>' +
-        '<div class="follow-ups-list">' +
-          q.followUps.map(function(f) {
-            return '<div class="follow-up-item ' + (f.resolved ? 'resolved' : 'pending') + '">' +
-              '<div class="follow-up-text">' + escapeHtml(f.text) + '</div>' +
-              '<div class="follow-up-status">' +
-                (f.resolved ?
-                  '<span class="resolved-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Resolved</span>' :
-                  '<span class="pending-badge">Awaiting response</span>') +
-              '</div>' +
-              (f.resolved ?
-                '<div class="follow-up-resolution"><div class="resolution-label">Teacher\'s response:</div><div class="resolution-text">' + escapeHtml(f.resolution) + '</div><div class="follow-up-time">Resolved ' + timeAgo(f.resolvedTimestamp) + '</div></div>' :
-                '') +
-              '<div class="follow-up-time">' + timeAgo(f.timestamp) + '</div>' +
-            '</div>';
-          }).join('') +
-        '</div>' +
-      '</div>';
-    }
-    return '<div class="answer-card" data-question-id="' + q.id + '">' +
-      '<div class="answer-card-q">Q:</div>' +
-      '<div class="answer-card-q-text">' + escapeHtml(q.text) + '</div>' +
-      '<div class="answer-card-a">' +
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>' +
-        "Teacher's Answer:" +
-      '</div>' +
-      '<div class="answer-card-a-text">' + escapeHtml(q.answer) + '</div>' +
-      '<div class="answer-time">' + timeAgo(q.timestamp) + '</div>' +
-      followUpsHtml +
-    '</div>';
-  }).join('');
-
-  // Attach follow-up event listeners
-  answersList.querySelectorAll('.answer-card').forEach(function(card) {
-    var questionId = card.getAttribute('data-question-id');
-    var input = card.querySelector('.follow-up-input');
-    var submitBtn = card.querySelector('.follow-up-submit');
-
-    var submitFollowUp = function() {
-      var text = input.value.trim();
-      if (text) {
-        addFollowUp(questionId, text);
-        input.value = '';
-        renderAnswers();
-      }
-    };
-
-    submitBtn.addEventListener('click', submitFollowUp);
-    input.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') submitFollowUp();
-    });
-  });
-}
-
-// ===== ESCAPE HTML =====
-function escapeHtml(text) {
-  var div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// ===== TOAST =====
+// ── Toast ──
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg;
@@ -2464,62 +1646,6 @@ function showToast(msg) {
   clearTimeout(window._toastTimer);
   window._toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2400);
 }
-
-// ===== LOGO =====
-function triggerLogoUpload() {
-  document.getElementById('nav-logo-upload').click();
-}
-
-function uploadLogo(input) {
-  var file = input.files[0];
-  if (!file) return;
-  if (!file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    logoDataUrl = e.target.result;
-    applyLogoEverywhere();
-    showToast('Logo updated ✓');
-  };
-  reader.readAsDataURL(file);
-}
-
-function applyLogoEverywhere() {
-  if (!logoDataUrl) return;
-  LOGO_IDS.forEach(function(id) {
-    var container = document.getElementById(id);
-    if (!container) return;
-    var existing = container.querySelector('img.logo-img');
-    if (existing) existing.remove();
-    container.querySelectorAll('span.logo-fallback, span.logo-fallback-lg, span.logo-text').forEach(function(s) {
-      s.style.display = 'none';
-    });
-    var img = document.createElement('img');
-    img.src = logoDataUrl;
-    img.className = 'logo-img';
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;pointer-events:none;';
-    container.insertBefore(img, container.firstChild);
-  });
-}
-
-// ===== LIVE REFRESH =====
-var lastQuestionCount = getQuestions().length;
-setInterval(function() {
-  var questions = getQuestions();
-  if (questions.length !== lastQuestionCount) {
-    lastQuestionCount = questions.length;
-    var dash = document.getElementById('screen-dashboard');
-    if (dash && dash.classList.contains('active')) {
-      renderQuestions();
-    }
-    updateAnswersBadge();
-  }
-  var pendingDoubts = getPendingFollowUpsCount();
-  var doubtsBadge = document.getElementById('doubts-count-badge');
-  if (doubtsBadge) doubtsBadge.textContent = pendingDoubts;
-}, 1000);
-
-// ===== INIT =====
-initSampleData();
 </script>
 </body>
 </html>
