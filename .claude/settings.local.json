@@ -8,7 +8,10 @@
       "Bash(npm install:*)",
       "Read(//c/Program Files/GitHub CLI//**)",
       "Read(//c/Program Files \\(x86\\)/**)",
-      "Bash(/c/Program Files/GitHub CLI/gh.exe auth:*)"
+      "Bash(/c/Program Files/GitHub CLI/gh.exe auth:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }

@@ -9,7 +9,6 @@ pluginManagement {
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.androidbrowserhelper.trusted.launcher")
 }
 
 android {
@@ -69,6 +68,8 @@ dependencies {
 
     // AndroidX Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+    // Chrome Library for TWA - not needed, using bundled Chrome
 
     // Testing
     testImplementation("junit:junit:4.13.2")

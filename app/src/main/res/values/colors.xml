@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors - Navy -->
+    <color name="primary">#1B2B5E</color>
+    <color name="primary_dark">#121B40</color>
+    <color name="primary_light">#2A3F7E</color>
+
+    <!-- Accent Colors - Bright Blue -->
+    <color name="accent">#4361EE</color>
+    <color name="accent_light">#6B83F2</color>
+
+    <!-- Secondary Colors -->
+    <color name="secondary">#4361EE</color>
+    <color name="secondary_variant">#3651D4</color>
+
+    <!-- Background Colors -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#F8F9FA</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1B2B5E</color>
+    <color name="text_secondary">#6C757D</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="error">#DC3545</color>
+    <color name="success">#28A745</color>
+
+    <!-- Launcher Icon Colors -->
+    <color name="ic_launcher_background">#1B2B5E</color>
+</resources>
